@@ -24,13 +24,6 @@ movie = movieList[random_movie]
 div = movie.find('div', attrs={'class': 'lister-item-content'})
 header = div.findChildren('h3', attrs={'class': 'lister-item-header'})
 movie_name = str((header[0].findChildren('a'))[0].contents[0].encode('utf-8').decode('ascii', 'ignore'))
-#
-#for div_item in tqdm(movieList):
-#    div = div_item.find('div', attrs={'class': 'lister-item-content'})
-#    header = div.findChildren('h3', attrs={'class': 'lister-item-header'})
-#    print(str(i) + '. Movie: ' + str((header[0].findChildren('a'))[0].contents[0].encode('utf-8').decode('ascii', 'ignore')))
-#    i = i+1
-
 search_url = "https://www.google.co.in/search?q=fmovies"
 response = http.request('GET', search_url)
 soup = BeautifulSoup(response.data, "html.parser")
@@ -44,13 +37,15 @@ movie_name_for_url = movie_name.replace(" ","+")
 new_url = new_url + 'search/' + str(movie_name_for_url) + '.html'
 print(new_url)
 
+mail_ids = ["debashis.gt540m@gmail.com", "karan.singh@olacabs.com", "shashank.singh@olacabs.com", "chandra.rai@olacabs.com","neeraj.sharma@olacabs.com"]
 sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
-from_email = Email("deba-suggests@debashis.com")
-to_email = Email("debashis.gt540m@gmail.com")
-subject = "Movie Suggestion for the day!"
-content = Content("text/html", "<html><head></head><body>Today's recommended movie based on IMDB ratings is " + str(movie_name) + ' ( Released in ' + str(year) + ' ). Click here to <a href=' + str(new_url) + '  >watch it</a> </body> !')
-mail = Mail(from_email, subject, to_email, content)
-response = sg.client.mail.send.post(request_body=mail.get())
-print(response.status_code)
-print(response.body)
-print(response.headers)
+for mail_id in mail_ids:
+    from_email = Email("deba-suggests@debashis.com")
+    to_email = Email(mail_id)
+    subject = "Movie Suggestion for the day!"
+    content = Content("text/html", "<html><head></head><body>Today's recommended movie based on IMDB ratings is " + str(movie_name) + ' ( Released in ' + str(year) + ' ). Click here to <a href=' + str(new_url) + '  >watch it</a> </body> !')
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+    print(response.status_code)
+    print(response.body)
+    print(response.headers)
