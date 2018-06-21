@@ -37,7 +37,7 @@ movie_name_for_url = movie_name.replace(" ","+")
 new_url = new_url + 'search/' + str(movie_name_for_url) + '.html'
 print(new_url)
 
-mail_ids = ["debashis.gt540m@gmail.com", "karan.singh@olacabs.com", "shashank.singh@olacabs.com", "chandra.rai@olacabs.com","neeraj.sharma@olacabs.com"]
+mail_ids = ["debashis.gt540m@gmail.com"]
 sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
 for mail_id in mail_ids:
     from_email = Email("deba-suggests@debashis.com")
